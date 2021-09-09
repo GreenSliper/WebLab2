@@ -13,7 +13,7 @@ public class AlbumListServlet extends HttpServlet {
     public void init()
     {
         System.out.println("AlbumList servlet was created");
-        currentSet = new AlbumSet(new DummyAlbumSetSaveLoader());
+        currentSet = new AlbumSet(new DBAlbumSetSaveLoader());
     }
 
     public void destroy()
@@ -40,17 +40,32 @@ public class AlbumListServlet extends HttpServlet {
         }
     }
 
+    public void processInputData(HttpServletRequest request)
+    {
+        boolean dataCorrect = true;
+        int albumID = 0, rating = 0;
+        try {
+            albumID = Integer.parseInt(request.getParameter("albumid"));
+            rating = Integer.parseInt(request.getParameter("rating"));
+        }
+        catch (NumberFormatException e) {
+            dataCorrect = false;
+        }
+        String username = request.getParameter("username");
+        if(dataCorrect && !username.isEmpty())
+            currentSet.tryAddRating(albumID, rating, username);
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        processInputData(request);
         currentSet.load();
         sendView(request, response, currentSet);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int albumID = Integer.parseInt(request.getParameter("albumID"));
-        int rating = Integer.parseInt(request.getParameter("rating"));
-        currentSet.tryAddRating(albumID, rating);
+        processInputData(request);
         currentSet.load();
         sendView(request, response, currentSet);
     }

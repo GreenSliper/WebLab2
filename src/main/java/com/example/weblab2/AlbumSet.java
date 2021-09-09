@@ -1,6 +1,5 @@
 package com.example.weblab2;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AlbumSet implements IAlbumSet {
@@ -24,9 +23,16 @@ public class AlbumSet implements IAlbumSet {
     }
 
     @Override
-    public boolean tryAddRating(int lineId, int rating) {
-        //TODO
-        return true;
+    public boolean tryAddRating(int lineId, int rating, String username) {
+        var line = lines.get(lineId);
+        if(saveLoader.userHasRating(line, username))
+            return false;
+        else{
+            line.addRating(rating);
+            saveLoader.updateRating(line);
+            saveLoader.addAlbumRatedNote(username, line);
+            return true;
+        }
     }
 
     @Override
