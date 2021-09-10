@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface IAlbumSetSaveLoader {
     void save(List<IAlbumLine> set);
+    boolean userExists(String username);
     boolean userHasRating(IAlbumLine line, String username);
     void updateRating(IAlbumLine line);
     void addAlbumRatedNote(String user, IAlbumLine line);

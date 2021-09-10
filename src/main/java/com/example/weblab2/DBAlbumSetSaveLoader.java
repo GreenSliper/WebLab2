@@ -21,6 +21,19 @@ public class DBAlbumSetSaveLoader implements IAlbumSetSaveLoader{
     }
 
     @Override
+    public boolean userExists(String username) {
+        ResultSet res = null;
+        try {
+            res = db.ExecuteQuery("select * from users u where\n" +
+                    " u.name = '" + username +"'");
+            return  (res.next());
+        } catch (DBFacade.DBNotConnectedException | SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
     public boolean userHasRating(IAlbumLine line, String username) {
         try {
             var res = db.ExecuteQuery("select * from albumsratings ar where\n" +

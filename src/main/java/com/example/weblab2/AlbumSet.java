@@ -23,23 +23,27 @@ public class AlbumSet implements IAlbumSet {
     }
 
     @Override
-    public boolean tryAddRating(int lineId, int rating, String username) {
-        var line = lines.get(lineId);
-        if(saveLoader.userHasRating(line, username))
-            return false;
-        else{
-            line.addRating(rating);
-            saveLoader.updateRating(line);
-            saveLoader.addAlbumRatedNote(username, line);
-            return true;
-        }
+    public boolean userHasRating(IAlbumLine line, String username) {
+        return saveLoader.userHasRating(line, username);
     }
 
     @Override
-    public String getTable() {
-        StringBuilder result = new StringBuilder();
-        for (var line : lines)
-            result.append(line.getHTMLTableLine());
-        return result.toString();
+    public boolean canUserAddRating(int lineId, String username) {
+        return saveLoader.userExists(username) &&
+                !saveLoader.userHasRating(lines.get(lineId), username);
+    }
+
+    @Override
+    public boolean addRating(int lineId, int rating, String username) {
+        var line = lines.get(lineId);
+        line.addRating(rating);
+        saveLoader.updateRating(line);
+        saveLoader.addAlbumRatedNote(username, line);
+        return true;
+    }
+
+    @Override
+    public List<IAlbumLine> getLines() {
+        return lines;
     }
 }

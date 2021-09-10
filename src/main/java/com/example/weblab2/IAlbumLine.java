@@ -6,4 +6,6 @@ public interface IAlbumLine {
     int getId();
     int getRatingsCount();
     float getRating();
+    String getPerformer();
+    String getAlbum();
 }

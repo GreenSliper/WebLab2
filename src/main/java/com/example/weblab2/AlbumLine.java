@@ -41,4 +41,14 @@ public class AlbumLine implements IAlbumLine {
     public float getRating() {
         return rating;
     }
+
+    @Override
+    public String getPerformer() {
+        return performer;
+    }
+
+    @Override
+    public String getAlbum() {
+        return album;
+    }
 }
