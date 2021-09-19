@@ -3,10 +3,10 @@
 <%@ page import="com.example.weblab2.IAlbumLine" %>
 <%@ page import="java.util.List" %>
 <%
-    ILocalizator localizator = new Localizator();
-    localizator.init((ILocalizator.Languages)request.getAttribute("lang"));
+    Localizator localizator = Localizator.getInstance(null);
     List<IAlbumLine> lines = (List<IAlbumLine>) request.getAttribute("lines");
     List<Boolean> canVoteList = (List<Boolean>) request.getAttribute("canVoteList");
+    String loggedInUsername = (String) request.getAttribute("loggedInUsername");
 %>
 <style>
     td{
@@ -19,6 +19,12 @@
 </head>
 <body>
 <h1><%=localizator.getResource("header")%></h1>
+<% if(loggedInUsername==null) { %>
+    <a href='/login'><h4><%=localizator.getResource("login")%></h4></a>
+<%} else {%>
+<h3><%=localizator.getResource("helloText")%> <%=loggedInUsername%>!</h3>
+<a href='/login?logout=true'><h4><%=localizator.getResource("logout")%></h4></a>
+<%}%>
 <table border='0' style="border-collapse:collapse; padding: 3px">
     <tr><td><h4> <%=localizator.getResource("performer")%>
         </h4></td><td><h4> <%=localizator.getResource("album")%>

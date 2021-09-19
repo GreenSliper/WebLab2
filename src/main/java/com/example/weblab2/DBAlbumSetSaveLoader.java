@@ -6,14 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DBAlbumSetSaveLoader implements IAlbumSetSaveLoader{
-    private final DBFacade db = new DBFacade();
+    private final DBFacade db = DBFacade.getInstance();
     private final String dbPerformer = "performer", dbAlbum = "album",
             dbRating="rating", dbRatingsCount="ratingscount", dbId = "id";
-
-    public DBAlbumSetSaveLoader()
-    {
-        db.ConnectDB();
-    }
 
     @Override
     public void save(List<IAlbumLine> set) {

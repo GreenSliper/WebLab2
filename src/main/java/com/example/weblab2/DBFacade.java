@@ -3,6 +3,18 @@ package com.example.weblab2;
 import java.sql.*;
 
 public class DBFacade {
+
+    public static DBFacade getInstance()
+    {
+        if(instance == null) {
+            instance = new DBFacade();
+            instance.ConnectDB();
+        }
+        return instance;
+    }
+
+    private static DBFacade instance;
+
     public static class DBNotConnectedException extends Exception
     {
         String message;
@@ -21,7 +33,8 @@ public class DBFacade {
     public void ConnectDB()
     {
         try {
-            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            if(conn == null)
+                conn = DriverManager.getConnection(DB_URL, USER, PASS);
 
         } catch (SQLException e) {
             System.out.println("Connection Failed");
